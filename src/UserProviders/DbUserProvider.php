@@ -52,7 +52,6 @@ class DbUserProvider implements UserProviderInterface
      * @param string $table 用户表
      * @param string $idKey 模型id属性名称
      * @param string $passwordKey 用户凭证数组里的密码key
-     * @param bool $forceValidatePassword 是否强制验证密码
      * @param Hasher $hasher 密码hash处理器
      */
     public function __construct(
