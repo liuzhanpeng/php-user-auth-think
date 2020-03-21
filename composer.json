@@ -1,0 +1,32 @@
+{
+    "name": "lzppeng/php-user-auth-think",
+    "description": "基于php-user-auth核心认证库存的thinkphp认证模块",
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name": "liuzhanpeng",
+        "email": "liuzhanpeng@gmail.com"
+    }],
+    "repositories": [{
+        "type": "path",
+        "url": "../php-user-auth"
+    }],
+    "require": {
+        "php": ">=7.0",
+        "lzpeng/php-user-auth": "dev-master",
+        "topthink/framework": "v5.1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lzpeng\\Auth\\Think\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lzpeng\\Auth\\Think\\Tests\\": "tests/"
+        }
+    }
+}
