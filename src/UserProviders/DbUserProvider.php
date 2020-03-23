@@ -125,7 +125,7 @@ class DbUserProvider implements UserProviderInterface
             throw new Exception('用户身份对象必须实现PasswordInterface接口');
         }
 
-        if (!$this->hasher->check($credentials[$this->passwordKey], $user->getPassword())) {
+        if (!$this->hasher->check($credentials[$this->passwordKey], $user->password())) {
             throw new InvalidCredentialException('密码错误');
         }
     }
