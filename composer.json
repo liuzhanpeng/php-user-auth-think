@@ -1,5 +1,5 @@
 {
-    "name": "lzppeng/php-user-auth-think",
+    "name": "lzpeng/php-user-auth-think",
     "description": "基于php-user-auth核心认证库存的thinkphp认证模块",
     "type": "library",
     "license": "MIT",
