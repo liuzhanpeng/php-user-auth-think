@@ -7,13 +7,9 @@
         "name": "liuzhanpeng",
         "email": "liuzhanpeng@gmail.com"
     }],
-    "repositories": [{
-        "type": "path",
-        "url": "../php-user-auth"
-    }],
     "require": {
         "php": ">=7.0",
-        "lzpeng/php-user-auth": "dev-master",
+        "lzpeng/php-user-auth": "1.0.*",
         "topthink/framework": "v5.1.*"
     },
     "require-dev": {
