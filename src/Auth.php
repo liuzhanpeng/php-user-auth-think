@@ -16,7 +16,7 @@ class Auth extends AbstractAuth
     /**
      * @inheritDoc
      */
-    protected function init($authManager)
+    static protected function init($authManager)
     {
         parent::init($authManager);
 
@@ -57,7 +57,7 @@ class Auth extends AbstractAuth
         });
 
         $authManager->registerAuthenticatorCreator('session', function ($config) {
-            if (isset($config['session_key'])) {
+            if (!isset($config['session_key'])) {
                 throw new ConfigException('SessionAuthenticator需要配置session_key');
             }
 
@@ -65,7 +65,7 @@ class Auth extends AbstractAuth
         });
 
         $authManager->registerAuthenticatorCreator('token', function ($config) {
-            if (isset($config['token_key'])) {
+            if (!isset($config['token_key'])) {
                 throw new ConfigException('TokenAuthenticator需要配置token_key');
             }
 
@@ -82,7 +82,7 @@ class Auth extends AbstractAuth
     /**
      * @inheritDoc
      */
-    protected function getConfig()
+    static protected function getConfig()
     {
         return config('auth.');
     }
