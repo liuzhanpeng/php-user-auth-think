@@ -83,10 +83,16 @@ class TokenAuthenticator extends AbstractAuthenticator
      */
     protected function storeUser(UserInterface $user)
     {
-        $package = $this->getRequestTokenPackage();
+        $package = $this->generateTokenPackage($user->id());
+
+        if ($this->cache->has($package['userId'])) {
+            $this->cache->rm($package['userId']);
+        }
 
         $this->cache->set($package['userId'], $package['token'], $this->timeout);
         $this->user = $user;
+
+        return base64_encode(json_encode($package));
     }
 
     /**
@@ -105,6 +111,10 @@ class TokenAuthenticator extends AbstractAuthenticator
 
         $token = $this->cache->get($package['userId']);
         if (empty($token)) {
+            return null;
+        }
+
+        if (strcmp($token, $package['token']) !== 0) {
             return null;
         }
 
@@ -155,15 +165,15 @@ class TokenAuthenticator extends AbstractAuthenticator
      * 需要不同的生成方式，可直接继承类重写此方法
      *
      * @param mixed $userId 用户标识
-     * @return string
+     * @return array
      */
     protected function generateTokenPackage($userId)
     {
         $token = hash_hmac('sha256', uniqid(), $userId);
 
-        return base64_encode(json_encode([
+        return [
             'userId' => $userId,
             'token' => $token,
-        ]));
+        ];
     }
 }
