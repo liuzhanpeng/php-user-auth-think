@@ -18,6 +18,8 @@ class Auth extends AbstractAuth
      */
     protected function init($authManager)
     {
+        parent::init($authManager);
+
         $authManager->registerUserProviderCreator('model', function ($config) {
             if (!isset($config['model'])) {
                 throw new ConfigException('ModelUserProvider需要配置model');
