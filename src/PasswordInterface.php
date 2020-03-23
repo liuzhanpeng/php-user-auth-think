@@ -14,5 +14,5 @@ interface PasswordInterface
      *
      * @return string
      */
-    public function password();
+    public function getPassword();
 }
