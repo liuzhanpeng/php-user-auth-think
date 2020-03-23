@@ -5,6 +5,7 @@ namespace Lzpeng\Auth\Think;
 use Lzpeng\Auth\AbstractAuth;
 use Lzpeng\Auth\Exception\ConfigException;
 use Lzpeng\Auth\Think\Authenticators\SessionAuthenticator;
+use Lzpeng\Auth\Think\Authenticators\TokenAuthenticator;
 use Lzpeng\Auth\Think\Hashers\HasherInterface;
 use Lzpeng\Auth\Think\UserProviders\ModelUserProvider;
 use Lzpeng\Auth\UserProviders\DbUserProvider;
@@ -17,6 +18,8 @@ class Auth extends AbstractAuth
      */
     protected function init($authManager)
     {
+        parent::init($authManager);
+
         $authManager->registerUserProviderCreator('model', function ($config) {
             if (!isset($config['model'])) {
                 throw new ConfigException('ModelUserProvider需要配置model');
@@ -57,7 +60,22 @@ class Auth extends AbstractAuth
             if (isset($config['session_key'])) {
                 throw new ConfigException('SessionAuthenticator需要配置session_key');
             }
+
             return new SessionAuthenticator($config['session_key'], Container->get('session'));
+        });
+
+        $authManager->registerAuthenticatorCreator('token', function ($config) {
+            if (isset($config['token_key'])) {
+                throw new ConfigException('TokenAuthenticator需要配置token_key');
+            }
+
+            return new TokenAuthenticator(
+                $config['token_key'],
+                $config['timeout'] ?? 60 * 30,
+                $config['auto_refresh'] ?? true,
+                Container::get('cache'),
+                Container::get('request'),
+            );
         });
     }
 
