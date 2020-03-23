@@ -61,7 +61,7 @@ class Auth extends AbstractAuth
                 throw new ConfigException('SessionAuthenticator需要配置session_key');
             }
 
-            return new SessionAuthenticator($config['session_key'], Container->get('session'));
+            return new SessionAuthenticator($config['session_key'], Container::get('session'));
         });
 
         $authManager->registerAuthenticatorCreator('token', function ($config) {
