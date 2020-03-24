@@ -169,7 +169,7 @@ class TokenAuthenticator extends AbstractAuthenticator
      */
     protected function generateTokenPackage($userId)
     {
-        $token = hash_hmac('sha256', uniqid(), $userId);
+        $token = hash_hmac('sha256', uniqid('', true), $userId);
 
         return [
             'userId' => $userId,
