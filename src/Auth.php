@@ -4,6 +4,7 @@ namespace Lzpeng\Auth\Think;
 
 use Lzpeng\Auth\AbstractAuth;
 use Lzpeng\Auth\Exception\ConfigException;
+use Lzpeng\Auth\Think\Authenticators\OnceAuthenticator;
 use Lzpeng\Auth\Think\Authenticators\SessionAuthenticator;
 use Lzpeng\Auth\Think\Authenticators\TokenAuthenticator;
 use Lzpeng\Auth\Think\Hashers\HasherInterface;
@@ -73,6 +74,19 @@ class Auth extends AbstractAuth
                 $config['token_key'],
                 $config['timeout'] ?? 60 * 30,
                 $config['auto_refresh'] ?? true,
+                Container::get('cache'),
+                Container::get('request'),
+            );
+        });
+
+        $authManager->registerAuthenticatorCreator('once', function ($config) {
+            if (!isset($config['token_key'])) {
+                throw new ConfigException('OnceAuthenticator需要配置token_key');
+            }
+
+            return new OnceAuthenticator(
+                $config['token_key'],
+                $config['timeout'] ?? 60 * 5,
                 Container::get('cache'),
                 Container::get('request'),
             );
