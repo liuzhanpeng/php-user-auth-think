@@ -92,7 +92,7 @@ class OnceAuthenticator extends AbstractAuthenticator
         // 用完即弃
         $this->cache->rm($token);
 
-        return $this->getUserProvider()->findById($userId);
+        return $this->user = $this->getUserProvider()->findById($userId);
     }
 
     /**
@@ -113,7 +113,7 @@ class OnceAuthenticator extends AbstractAuthenticator
      */
     private function getRequestToken()
     {
-        return $this->request->query($this->tokenKey);
+        return $this->request->get($this->tokenKey);
     }
 
     /**
