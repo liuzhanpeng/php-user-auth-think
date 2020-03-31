@@ -75,7 +75,7 @@ class Auth extends AbstractAuth
                 $config['timeout'] ?? 60 * 30,
                 $config['auto_refresh'] ?? true,
                 Container::get('cache'),
-                Container::get('request'),
+                Container::get('request')
             );
         });
 
@@ -88,7 +88,7 @@ class Auth extends AbstractAuth
                 $config['token_key'],
                 $config['timeout'] ?? 60 * 5,
                 Container::get('cache'),
-                Container::get('request'),
+                Container::get('request')
             );
         });
     }
