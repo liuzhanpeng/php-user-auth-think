@@ -111,7 +111,7 @@ class OnceAuthenticator extends AbstractAuthenticator
      *
      * @return string|null
      */
-    private function getRequestToken()
+    protected function getRequestToken()
     {
         return $this->request->get($this->tokenKey);
     }
@@ -122,7 +122,7 @@ class OnceAuthenticator extends AbstractAuthenticator
      * @param mixed $userId 用户标识
      * @return string
      */
-    private function generateToken($userId)
+    protected function generateToken($userId)
     {
         return hash_hmac('sha256', uniqid('', true), $userId);
     }
