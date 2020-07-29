@@ -7,6 +7,7 @@ use Lzpeng\Auth\Exception\ConfigException;
 use Lzpeng\Auth\Think\Authenticators\OnceAuthenticator;
 use Lzpeng\Auth\Think\Authenticators\SessionAuthenticator;
 use Lzpeng\Auth\Think\Authenticators\TokenAuthenticator;
+use Lzpeng\Auth\Think\Hashers\BcryptHasher;
 use Lzpeng\Auth\Think\Hashers\HasherInterface;
 use Lzpeng\Auth\Think\UserProviders\ModelUserProvider;
 use Lzpeng\Auth\UserProviders\DbUserProvider;
@@ -29,12 +30,10 @@ class Auth extends AbstractAuth
             $modelClass = $config['model'];
             $idKey = $config['id_key'] ?? 'id';
             $passwordKey = $config['password_key'] ?? 'password';
+            $hasherConfig = $config['hasher'] ?? ['driver' => BcryptHasher::class];
 
-            // 因为hasher一般在其它场景(创建用户、修改密码等)时也会用到，所以直接获取注入容器内的hasher组件
-            $hasher = Container::get(HasherInterface::class);
-            if (is_null($hasher)) {
-                throw new ConfigException('注入容器中找不到实现HashInterfacer接口的hasher组件');
-            }
+            Container::set(HasherInterface::class, $hasherConfig['driver']);
+            $hasher = Container::get(HasherInterface::class, $hasherConfig['params'] ?? []);
 
             return new ModelUserProvider($modelClass, $idKey, $passwordKey, $hasher);
         });
@@ -47,12 +46,10 @@ class Auth extends AbstractAuth
             $table = $config['table'];
             $idKey = $config['id_key'] ?? 'id';
             $passwordKey = $config['password_key'] ?? 'password';
+            $hasherConfig = $config['hasher'] ?? ['driver' => BcryptHasher::class];
 
-            // 因为hasher一般在其它场景(创建用户、修改密码等)时也会用到，所以直接获取注入容器内的hasher组件
-            $hasher = Container::get(HasherInterface::class);
-            if (is_null($hasher)) {
-                throw new ConfigException('注入容器中找不到实现HashInterfacer接口的hasher组件');
-            }
+            Container::set(HasherInterface::class, $hasherConfig['driver']);
+            $hasher = Container::get(HasherInterface::class, $hasherConfig['params'] ?? []);
 
             return new DbUserProvider($table, $idKey, $passwordKey, $hasher);
         });
