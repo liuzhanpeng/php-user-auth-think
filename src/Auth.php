@@ -95,6 +95,6 @@ class Auth extends AbstractAuth
      */
     static protected function getConfig()
     {
-        return config('auth.');
+        return config('auth');
     }
 }
