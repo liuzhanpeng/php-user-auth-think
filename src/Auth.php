@@ -33,7 +33,7 @@ class Auth extends AbstractAuth
             $hasherConfig = $config['hasher'] ?? ['driver' => BcryptHasher::class];
 
             Container::getInstance()->bind(HasherInterface::class, $hasherConfig['driver']);
-            $hasher = Container::get(HasherInterface::class, $hasherConfig['params'] ?? []);
+            $hasher = Container::getInstance()->get(HasherInterface::class, $hasherConfig['params'] ?? []);
 
             return new ModelUserProvider($modelClass, $idKey, $passwordKey, $hasher);
         });
@@ -49,7 +49,7 @@ class Auth extends AbstractAuth
             $hasherConfig = $config['hasher'] ?? ['driver' => BcryptHasher::class];
 
             Container::getInstance()->bind(HasherInterface::class, $hasherConfig['driver']);
-            $hasher = Container::get(HasherInterface::class, $hasherConfig['params'] ?? []);
+            $hasher = Container::getInstance()->get(HasherInterface::class, $hasherConfig['params'] ?? []);
 
             return new DbUserProvider($table, $idKey, $passwordKey, $hasher);
         });
@@ -59,7 +59,7 @@ class Auth extends AbstractAuth
                 throw new ConfigException('SessionAuthenticator需要配置session_key');
             }
 
-            return new SessionAuthenticator($config['session_key'], Container::get('session'));
+            return new SessionAuthenticator($config['session_key'], Container::getInstance()->get('session'));
         });
 
         $authManager->registerAuthenticatorCreator('token', function ($config) {
@@ -71,8 +71,8 @@ class Auth extends AbstractAuth
                 $config['token_key'],
                 $config['timeout'] ?? 60 * 30,
                 $config['auto_refresh'] ?? true,
-                Container::get('cache'),
-                Container::get('request')
+                Container::getInstance()->get('cache'),
+                Container::getInstance()->get('request')
             );
         });
 
@@ -84,8 +84,8 @@ class Auth extends AbstractAuth
             return new OnceAuthenticator(
                 $config['token_key'],
                 $config['timeout'] ?? 60 * 5,
-                Container::get('cache'),
-                Container::get('request')
+                Container::getInstance()->get('cache'),
+                Container::getInstance()->get('request')
             );
         });
     }
