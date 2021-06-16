@@ -32,7 +32,7 @@ class Auth extends AbstractAuth
             $passwordKey = $config['password_key'] ?? 'password';
             $hasherConfig = $config['hasher'] ?? ['driver' => BcryptHasher::class];
 
-            Container::set(HasherInterface::class, $hasherConfig['driver']);
+            Container::bind(HasherInterface::class, $hasherConfig['driver']);
             $hasher = Container::get(HasherInterface::class, $hasherConfig['params'] ?? []);
 
             return new ModelUserProvider($modelClass, $idKey, $passwordKey, $hasher);
@@ -48,7 +48,7 @@ class Auth extends AbstractAuth
             $passwordKey = $config['password_key'] ?? 'password';
             $hasherConfig = $config['hasher'] ?? ['driver' => BcryptHasher::class];
 
-            Container::set(HasherInterface::class, $hasherConfig['driver']);
+            Container::bind(HasherInterface::class, $hasherConfig['driver']);
             $hasher = Container::get(HasherInterface::class, $hasherConfig['params'] ?? []);
 
             return new DbUserProvider($table, $idKey, $passwordKey, $hasher);
