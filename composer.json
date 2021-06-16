@@ -10,7 +10,7 @@
     "require": {
         "php": ">=7.0",
         "lzpeng/php-user-auth": "1.0.*",
-        "topthink/framework": "^6.0.*"
+        "topthink/framework": "6.0.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4|^9.0"
