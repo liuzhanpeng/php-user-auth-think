@@ -86,7 +86,7 @@ class TokenAuthenticator extends AbstractAuthenticator
         $package = $this->generateTokenPackage($user->id());
 
         if ($this->cache->has($package['userId'])) {
-            $this->cache->rm($package['userId']);
+            $this->cache->delete($package['userId']);
         }
 
         $this->cache->set($package['userId'], $package['token'], $this->timeout);
@@ -133,7 +133,7 @@ class TokenAuthenticator extends AbstractAuthenticator
     {
         $package = $this->getRequestTokenPackage();
 
-        $this->cache->rm($package['userId']);
+        $this->cache->delete($package['userId']);
         $this->user = null;
     }
 
@@ -172,7 +172,7 @@ class TokenAuthenticator extends AbstractAuthenticator
         $token = hash_hmac('sha256', uniqid('', true), $userId);
 
         return [
-            'userId' => $userId,
+            'userId' => (string)$userId,
             'token' => $token,
         ];
     }
