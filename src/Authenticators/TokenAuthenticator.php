@@ -85,11 +85,11 @@ class TokenAuthenticator extends AbstractAuthenticator
     {
         $package = $this->generateTokenPackage($user->id());
 
-        if ($this->cache->has($package['userId'])) {
-            $this->cache->delete($package['userId']);
+        if ($this->cache->has($this->getCacheKey($package['userId']))) {
+            $this->cache->delete($this->getCacheKey($package['userId']));
         }
 
-        $this->cache->set($package['userId'], $package['token'], $this->timeout);
+        $this->cache->set($this->getCacheKey($package['userId']), $package['token'], $this->timeout);
         $this->user = $user;
 
         return base64_encode(json_encode($package));
@@ -109,7 +109,7 @@ class TokenAuthenticator extends AbstractAuthenticator
             return null;
         }
 
-        $token = $this->cache->get($package['userId']);
+        $token = $this->cache->get($this->getCacheKey($package['userId']));
         if (empty($token)) {
             return null;
         }
@@ -120,7 +120,7 @@ class TokenAuthenticator extends AbstractAuthenticator
 
         if ($this->autoRefresh) {
             // 更新过期时间
-            $this->cache->set($package['userId'], $package['token'], $this->timeout);
+            $this->cache->set($this->getCacheKey($package['userId']), $package['token'], $this->timeout);
         }
 
         return $this->getUserProvider()->findById($package['userId']);
@@ -133,7 +133,7 @@ class TokenAuthenticator extends AbstractAuthenticator
     {
         $package = $this->getRequestTokenPackage();
 
-        $this->cache->delete($package['userId']);
+        $this->cache->delete($this->getCacheKey($package['userId']));
         $this->user = null;
     }
 
@@ -175,5 +175,16 @@ class TokenAuthenticator extends AbstractAuthenticator
             'userId' => (string)$userId,
             'token' => $token,
         ];
+    }
+
+    /**
+     * 返回缓存key
+     *
+     * @param string $userId
+     * @return string
+     */
+    private function getCacheKey($userId)
+    {
+        return $this->tokenKey . '-' . $userId;
     }
 }
